@@ -16,6 +16,7 @@ public class BallBehaviour : MonoBehaviour {
 	}
 
 	void LateUpdate () {
+
 		this.GetComponent<Rigidbody>().velocity = constantSpeed * (this.GetComponent<Rigidbody>().velocity.normalized);
 	}
 }
