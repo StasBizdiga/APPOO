@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// screen shake utility script
+
 public class ScreenShake : MonoBehaviour {
 	public static ScreenShake instance;
+
 	private Vector3 originalPos = new Vector3(0f,0f,-10f);
 	private float timeAtCurrentFrame;
 	private float timeAtLastFrame;
