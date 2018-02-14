@@ -16,7 +16,6 @@ public class VfxController : MonoBehaviour {
 		StartScreen = GameObject.FindGameObjectWithTag ("STARTSCREEN");
 		EndScreen = GameObject.FindGameObjectWithTag ("ENDSCREEN");
 
-		setStartScreen (false);
 		setEndScreen   (false);
 	}
 
