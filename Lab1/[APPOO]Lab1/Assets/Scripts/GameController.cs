@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour {
 	public static GameController instance;
 	
+	public static bool isPlayer1AI,isPlayer2AI;
 	private static bool isGameOn;
 	private static bool isGameOver;
 
@@ -18,8 +19,8 @@ public class GameController : MonoBehaviour {
 		// bring some music!
 		SoundManager.instance.PlaySong(song1,song2,song3,song4);
 
-		// show the title screen
-		VfxController.instance.setStartScreen (true);
+		// show the title screen 
+		//VfxController.instance.setStartScreen (true); // (shown by default since enabled in scene)
 
 		// set the initial game state (not started, nor over)
 		isGameOver = false;
@@ -45,6 +46,10 @@ public class GameController : MonoBehaviour {
 			Destroy (GameObject.FindWithTag ("Ball"));
 		}
 		Instantiate (ball); // create new ball
+
+		// Letting AI take control by default
+		isPlayer1AI = true;
+		isPlayer2AI = true;
 	}
 	public void PauseGame()	{
 		Time.timeScale = 0;

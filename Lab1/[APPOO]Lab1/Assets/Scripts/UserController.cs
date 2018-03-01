@@ -4,24 +4,42 @@ using UnityEngine;
 using PlayerObject;
 
 public class UserController : MonoBehaviour {
-	private float moveSpeed = 8f;
-	Player1 player1;
-	Player2 player2;
+	public PaddlePlayer player1,player2;
 
 	void Start () {
-		player1 = new Player1();
-		player2 = new Player2();
+		player1 = new PaddlePlayer(1);
+		player2 = new PaddlePlayer(2);
 		}
+
+	void allowMovement(Movement mov, Rotation rot){ // listens to user input and performs the movement
+		mov.moveY(); // Move controls 
+		rot.turnZ(); // Rotation controls
+	}
 
 	void Update () {
 		if (GameController.instance.getGameOn() && !GameController.instance.getGameOver()) {
-			player1.allowMovement();
-			player2.allowMovement();
+
+			allowMovement(player1,player1);
+			allowMovement(player2,player2);
+
+			if (GameObject.FindWithTag ("Ball")) { // AI movement
+				if (GameController.isPlayer1AI) {
+					player1.autoFollow (GameObject.FindWithTag ("Ball"));
+				}
+				if (GameController.isPlayer2AI) {
+					player2.autoFollow (GameObject.FindWithTag ("Ball"));
+				}
+			}
 
 			// Unpause (round) when w,s,up or down keys are pressed
 			if (Time.timeScale == 0 && (Input.GetKey ("w") || Input.GetKey ("s") || Input.GetKey ("down") || Input.GetKey ("up"))) {
 				GameController.instance.ResumeGame ();
 			}
+			// setting players turn off AI upon taking key control
+			if (Input.GetKey ("w") || Input.GetKey ("s")) 
+			{GameController.isPlayer1AI = false;}
+			if ( Input.GetKey ("down") || Input.GetKey ("up")) 
+			{GameController.isPlayer2AI = false;}
 		}
 
 		// Reset button
@@ -45,3 +63,4 @@ public class UserController : MonoBehaviour {
 			}
 	}
 }
+

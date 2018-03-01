@@ -16,19 +16,19 @@ public class Boundary : MonoBehaviour {
 
 		if(this.gameObject.tag == "WallL")
 		{
-			Score.instance.plusOneRight ();
+			Score.instance.addScore (2);
 			SoundManager.instance.PlayOtherSfx (lose1, lose2, lose3, lose4, lose5);
 			ps.Play(true);
 		}
 
 		if(this.gameObject.tag == "WallR")
 		{
-			Score.instance.plusOneLeft ();
+			Score.instance.addScore (1);
 			SoundManager.instance.PlayOtherSfx (lose1, lose2, lose3, lose4, lose5);
 			ps.Play(true);
 		}
 
-		if (Score.instance.getScoreL() > 9 || Score.instance.getScoreR() > 9) {
+		if (Score.instance.getScore(1) > 9 || Score.instance.getScore(2) > 9) {
 			GameController.instance.EndGame ();
 		}
 
