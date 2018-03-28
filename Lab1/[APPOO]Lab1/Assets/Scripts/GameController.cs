@@ -67,7 +67,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	// play gong sound once
-	public void playGong() { SoundManager.instance.PlayOtherSfx (start); } 
+	public void playGong() { SoundManager.instance.PlaySfx (start); } 
 
 	// game state getters and setters
 	public bool getGameOn()			{ return isGameOn;	}

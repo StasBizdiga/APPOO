@@ -15,16 +15,18 @@ namespace PlayerObject{
 public abstract class PlayerDefault{
 		
 	protected GameObject player;
-	protected string[] controls = new string[4]; // [w,a,s,d]
+	protected string[] controls; 
 	
 	//public abstract void allowMovement (Movement mov, Rotation rot);
 }
 
 public class PaddlePlayer : PlayerDefault, Movement, Rotation {
+		
 		protected float moveSpeed = 8f;	// paddle speed	
 		protected float yLimit = 3.5f; 	// y axis boundary (amplitude)
 
 		public PaddlePlayer(int ID){
+			controls = new string[4]; 	// [w,a,s,d]
 			switch(ID){
 			case 1:
 				player = GameObject.FindGameObjectWithTag ("Player1"); // alternatively could instantiate from prefab

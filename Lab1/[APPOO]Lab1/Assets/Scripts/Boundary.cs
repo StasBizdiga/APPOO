@@ -17,14 +17,14 @@ public class Boundary : MonoBehaviour {
 		if(this.gameObject.tag == "WallL")
 		{
 			Score.instance.addScore (2);
-			SoundManager.instance.PlayOtherSfx (lose1, lose2, lose3, lose4, lose5);
+			SoundManager.instance.PlaySfx (lose1, lose2, lose3, lose4, lose5);
 			ps.Play(true);
 		}
 
 		if(this.gameObject.tag == "WallR")
 		{
 			Score.instance.addScore (1);
-			SoundManager.instance.PlayOtherSfx (lose1, lose2, lose3, lose4, lose5);
+			SoundManager.instance.PlaySfx (lose1, lose2, lose3, lose4, lose5);
 			ps.Play(true);
 		}
 

@@ -1,66 +1,45 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SoundManager : MonoBehaviour 
+
+public class SoundManager : MonoBehaviour
 {
 	public AudioSource efxSource,spcSource,Q;		
 	public AudioSource musicSource;                 
-	public static SoundManager instance = null;                  
-	public float lowPitchRange = .92f;              
-	public float highPitchRange = 1.07f;            
+	public static SoundManager instance = null;            
 
 	void Awake () {
 			instance = this;
 	}
 
-	//Used to play single sound clips.
-	public void PlayQuietSfx(params AudioClip[] clips) {
-		//Generate a random number between 0 and the length of our array of clips passed in.
-		int randomIndex = Random.Range(0, clips.Length);
-		//Set the clip to the clip at our randomly chosen index.
-		Q.clip = clips[randomIndex];
-		//Set the pitch of the audio source to the randomly chosen pitch.
-		Q.pitch = Random.Range(lowPitchRange, highPitchRange);
-		//Play the clip.
-		Q.Play ();
+	// utils
+	public float RandomPitch(float a = .92f, float b = 1.07f){ return Random.Range(a, b); }
+
+	AudioClip RandomPick(params AudioClip[] clips){	int randomIndex = Random.Range (0, clips.Length);
+		return clips[randomIndex]; }
+
+	void PlayAudio(AudioSource a, AudioClip clip, float pitch = 1f){
+		a.clip = clip;
+		a.pitch = pitch;
+		a.Play ();
 	}
 
 	//Used to play single sound clips.
-	public void PlayOtherSfx(params AudioClip[] clips) {
-		//Generate a random number between 0 and the length of our array of clips passed in.
-		int randomIndex = Random.Range(0, clips.Length);
-		//Set the clip to the clip at our randomly chosen index.
-		spcSource.clip = clips[randomIndex];
-		//Set the pitch of the audio source to the randomly chosen pitch.
-		spcSource.pitch = Random.Range(lowPitchRange, highPitchRange);
-		//Play the clip.
-		spcSource.Play ();
+	public void PlayQuietSfx(params AudioClip[] clips) {
+		PlayAudio (Q, RandomPick (clips), RandomPitch ());
+	}
+
+	public void PlaySfx(params AudioClip[] clips) {
+		PlayAudio (spcSource, RandomPick (clips), RandomPitch ());
 	}
 
 	public void PlayRandSfx(params AudioClip[] clips) {
-		//Generate a random number between 0 and the length of the array of clips passed in.
-		int randomIndex = Random.Range(0, clips.Length);
-		//Set the clip to the clip at our randomly chosen index.
-		efxSource.clip = clips[randomIndex];
-		//Set the pitch of the audio source to the randomly chosen pitch.
-		efxSource.pitch = Random.Range(lowPitchRange, highPitchRange);
-		//Play the clip.
-		efxSource.Play ();
+		PlayAudio (efxSource, RandomPick (clips), RandomPitch ());
+
 	}
 		
 	public void PlaySong (params AudioClip[] clips){
-		//Generate a random number between 0 and the length of our array of clips passed in.
-		int randomIndex = Random.Range(0, clips.Length);
-		//Set the clip to the clip at our randomly chosen index.
-		musicSource.clip = clips[randomIndex];
-		//Play the clip.
-		musicSource.Play();
-	}
+		PlayAudio (musicSource,RandomPick (clips));
 
-	//overloading PlayOtherSfx for a specified audiosource and audioclip
-	public void PlayOtherSfx(AudioSource a, AudioClip c)
-	{
-		a.clip = c;  // insert audioclip in audiosource
-		a.Play();	 // play it
 	}
 }
