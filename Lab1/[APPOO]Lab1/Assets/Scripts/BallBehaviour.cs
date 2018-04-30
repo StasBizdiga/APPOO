@@ -31,10 +31,14 @@ public class BallBehaviour : MonoBehaviour {
 		// every frame set the speed of the ball to remain constant
 		rb.velocity = constantSpeed * (rb.velocity.normalized);
 
-		// portion to avoid straight horizontal line infinity loop
+		// portion to avoid straight horizontal line ball movement, in an infinite loop
+		avoidStraightMovement();
+	}
+
+	private void avoidStraightMovement()
+	{
 		if (rb.velocity.y == 0f)  
 		{
-			// adding some spice (velocity on y axis)
 			rb.velocity = 
 				new Vector3(rb.velocity.x,
 					2f * 0.9f * Random.Range(1,3) - 3f, //here

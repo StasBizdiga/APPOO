@@ -5,54 +5,52 @@ using System.Collections;
 namespace PlayerObject{
 	
 	public interface Movement{
-		void moveY();
-	}	
-	
+		void move();
+	}
+
 	public interface Rotation{
-		void turnZ();
+		void turn();
 	}
 	
 public abstract class PlayerDefault{
 		
-	protected GameObject player;
-	protected string[] controls; 
-	
-	//public abstract void allowMovement (Movement mov, Rotation rot);
+	public GameObject player;
+	public string[] controls; 
+
 }
 
-public class PaddlePlayer : PlayerDefault, Movement, Rotation {
-		
-		protected float moveSpeed = 8f;	// paddle speed	
-		protected float yLimit = 3.5f; 	// y axis boundary (amplitude)
-
-		public PaddlePlayer(int ID){
-			controls = new string[4]; 	// [w,a,s,d]
-			switch(ID){
+	public class PaddleFactory{
+		public PaddlePlayer getInstance(int id, string[] controls){
+			PaddlePlayer p = new PaddlePlayer ();
+			p.controls = controls;
+			switch(id){
 			case 1:
-				player = GameObject.FindGameObjectWithTag ("Player1"); // alternatively could instantiate from prefab
-				// defining controls
-				controls[0] = "w";
-				controls[1] = "s";
-				controls[2] = "d";
-				controls[3] = "a";
+				p.player = GameObject.FindGameObjectWithTag ("Player1"); // alternatively can instantiate from prefab
 				break;
 			case 2:
-				player = GameObject.FindGameObjectWithTag ("Player2"); 
-				controls[0] = "up";
-				controls[1] = "down";
-				controls[2] = "right";
-				controls[3] = "left";
+				p.player = GameObject.FindGameObjectWithTag ("Player2"); 
 				break;
 			default:
-				break;
+				return null;
 			}
+			return p;
 		}
+	}
 
-		/*public override void allowMovement(Movement mov, Rotation rot){
-			mov.moveY(); // Move controls 
-			rot.turnZ(); // Rotation controls
+	public class SpectatorFactory{
+		public Spectator getInstance(string[] controls){
+			Spectator p = new Spectator ();
+			p.controls = controls;
+			p.player = GameObject.FindGameObjectWithTag ("spectator"); // alternatively can instantiate from prefab
+			return p;
+		}
+	}
+		
+public class PaddlePlayer : PlayerDefault, Movement, Rotation {
+		
+		protected float moveSpeed = 10f;	// paddle speed	
+		protected float yLimit = 3.5f; 	// y axis boundary (amplitude)
 
-		}*/
 		public void autoFollow(GameObject o){
 			if (o.transform.position.y > player.transform.position.y && player.transform.position.y < yLimit) {
 				player.transform.Translate (Vector3.up * Time.deltaTime * moveSpeed, Space.World);
@@ -61,7 +59,7 @@ public class PaddlePlayer : PlayerDefault, Movement, Rotation {
 			}
 		}
 
-		public void moveY(){
+		public void move(){
 			if (Input.GetKey (controls[0]) && player.transform.position.y < yLimit) {
 				player.transform.Translate (Vector3.up * Time.deltaTime * moveSpeed, Space.World);
 			} else if (Input.GetKey (controls[1]) && player.transform.position.y > -yLimit) {
@@ -69,7 +67,7 @@ public class PaddlePlayer : PlayerDefault, Movement, Rotation {
 			}
 		}
 
-		public void turnZ(){
+		public void turn(){
 			if (Input.GetKey (controls[2])) {
 				player.transform.rotation = Quaternion.Euler (0f, 0f, -15f);
 			} else if (Input.GetKey (controls[3])) {
@@ -80,4 +78,33 @@ public class PaddlePlayer : PlayerDefault, Movement, Rotation {
 		}
 	}
 
+
+
+	public class Spectator : PlayerDefault, Movement, Rotation {
+		
+		protected float moveSpeed = 5f;
+		protected float xyLimit = 3.5f; 	// boundary
+
+
+		public void move(){
+			if (Input.GetKey (controls [0]) && player.transform.position.y < xyLimit) {
+				player.transform.Translate (Vector3.up * Time.deltaTime * moveSpeed, Space.World);
+			} else if (Input.GetKey (controls [1]) && player.transform.position.y > -xyLimit) {
+				player.transform.Translate (Vector3.down * Time.deltaTime * moveSpeed, Space.World);
+			} else if (Input.GetKey (controls [2]) && player.transform.position.x < xyLimit) {
+				player.transform.Translate (Vector3.right * Time.deltaTime * moveSpeed, Space.World);
+			} else if (Input.GetKey (controls [3]) && player.transform.position.x > -xyLimit) {
+				player.transform.Translate (Vector3.left * Time.deltaTime * moveSpeed, Space.World);
+			}
+		}
+		public void turn(){
+			if (Input.GetKey (controls[4])) {
+				player.transform.rotation = Quaternion.Euler (0f, 0f, -15f);
+			} else if (Input.GetKey (controls[5])) {
+				player.transform.rotation = Quaternion.Euler (0f, 0f, 15f);
+			} else { 
+				player.transform.rotation = Quaternion.Euler (0f, 0f, 0f); // return to normal
+			}
+		}
+	}
 }
